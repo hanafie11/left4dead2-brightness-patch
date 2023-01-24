@@ -170,6 +170,7 @@ namespace han_l4dbfix
 			this.lblRestore.Size = new System.Drawing.Size(168, 14);
 			this.lblRestore.TabIndex = 7;
 			this.lblRestore.Text = "Restore Previous Backup";
+			this.lblRestore.Click += new System.EventHandler(this.LblRestoreClick);
 			// 
 			// btnSubscribe
 			// 

@@ -33,7 +33,7 @@ namespace han_l4dbfix.Classes {
 				return File.ReadAllLines(filePath);			 
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return new string[1];
+				return new string[1]; // kembalikan array kosong
 			}
 		}
 		
@@ -52,14 +52,36 @@ namespace han_l4dbfix.Classes {
 		}
 		
 		public void patchTarget (TextBox log) {
-			log.Clear();
 			// Cek Apakah textPatch ada di dalam baris Video.txt
+			string[] txtLines = readFile(targetPath);
+			short arrlen = (short)txtLines.Length;
+			if ( arrlen == 1 ) return; // cek apakah isi file video.txt tidak kosong
 			
-			// Jika ada keluar dari sub
+			log.Clear();
+			log.AppendText("[CHECKING FILE]");
 			
+			foreach(string line in txtLines) {
+				if(line.Contains(textPatch)) { // Jika ada keluar dari sub
+					log.AppendText(" Patch is not needed yet." + Environment.NewLine);
+					return;
+				}
+			}
+			
+			log.AppendText(" OK" + Environment.NewLine);
 			// Jika tidak ada lakukan backup file dulu, lalu inject textPatch kedalam file Video.txt
-			log.AppendText("[CREATING BACKUP]" + Environment.NewLine);
-			log.AppendText(backupTarget() ? "[>] Backup Successfully" : "[>] Backup Failed" + Environment.NewLine);
+			log.AppendText("[CREATING BACKUP]");
+			log.AppendText(backupTarget() ? " Succeed!" : " Failed!");
+			log.AppendText(Environment.NewLine);
+			
+			log.AppendText("[PATCHING]");
+			try {
+				txtLines.SetValue(textPatch + " }", arrlen -1);
+				File.WriteAllLines(targetPath, txtLines);
+				log.AppendText(" Succeed!" + Environment.NewLine);
+			} catch (Exception e) {
+				log.AppendText(" Failed!" + Environment.NewLine);
+				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 		
 		public void restoreBackup ( ) {

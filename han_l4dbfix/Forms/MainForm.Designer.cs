@@ -131,7 +131,7 @@ namespace han_l4dbfix
 			this.txtLog.Size = new System.Drawing.Size(468, 117);
 			this.txtLog.TabIndex = 4;
 			this.txtLog.Text = "[>] Hello There!\r\n[>] ONLY DOWNLOAD THIS PROGRAM FROM THE ORIGINAL SOURCE\r\n[>] Cl" +
-	"ick \'Patch Now\' Button To Begin";
+	"ose your Left 4 Dead 2 if it\'s open\r\n[>] Click \'Patch Now\' Button To Begin";
 			// 
 			// groupBox1
 			// 

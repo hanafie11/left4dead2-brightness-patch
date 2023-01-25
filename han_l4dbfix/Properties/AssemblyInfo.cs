@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription ("A simple tool that helps fix the brightness issues Left 4 Dead 2 game")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("Hanafie11")]
-[assembly: AssemblyProduct ("Left 4 Dead 2 Brightness Patch by. Hanafie11")]
+[assembly: AssemblyProduct ("Left 4 Dead 2 Brightness Patch")]
 [assembly: AssemblyCopyright ("Copyright © 2023 Hanafie11")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

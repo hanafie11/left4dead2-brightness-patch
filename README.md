@@ -2,5 +2,6 @@
 A simple tool that helps solve brightness issues in Left 4 Dead 2.
 
 # Build On
-1. .NET Framework 4.5.2
+1. SharpDevelop 5.1
+1. NET Framework 4.5.2
 2. C# 5.0

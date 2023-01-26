@@ -7,3 +7,12 @@ C:\Users\Superuser\Documents\SharpDevelop Projects\han_l4dbfix\han_l4dbfix\obj\D
 C:\Users\Superuser\Documents\SharpDevelop Projects\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.exe
 C:\Users\Superuser\Documents\SharpDevelop Projects\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.pdb
 C:\Users\Superuser\Documents\SharpDevelop Projects\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix._res.resources
+F:\Project\Git\han_l4dbfix\han_l4dbfix\bin\Debug\han_l4dbfix.exe.config
+F:\Project\Git\han_l4dbfix\han_l4dbfix\bin\Debug\han_l4dbfix.exe
+F:\Project\Git\han_l4dbfix\han_l4dbfix\bin\Debug\han_l4dbfix.pdb
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.csprojResolveAssemblyReference.cache
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.MainForm.resources
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix._res.resources
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.csproj.GenerateResource.Cache
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.exe
+F:\Project\Git\han_l4dbfix\han_l4dbfix\obj\Debug\han_l4dbfix.pdb

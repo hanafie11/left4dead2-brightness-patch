@@ -27,6 +27,27 @@ namespace han_l4dbfix.Classes {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+			
+		private void startInAdmin (string filepath) {
+			DialogResult confirmRestart = MessageBox.Show("Administrator Privileges Required, do you want to start this tool in Admin Mode?",
+				                              "Accesss Denied", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+			
+			if ( confirmRestart == DialogResult.Yes ) {
+				try {
+					// buat objek proses aplikasi dengan akses admin
+					var process = new Process();
+					process.StartInfo.FileName = filepath;
+					process.StartInfo.UseShellExecute = true;
+					process.StartInfo.Verb = "runas";
+					process.Start();
+					process.Dispose();
+					
+					Application.Exit(); // tutup aplikasi
+				} catch ( Exception e ) {
+					MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
 		
 		private string[] readFile (string filePath) {
 			try {
@@ -45,6 +66,9 @@ namespace han_l4dbfix.Classes {
 				
 				File.Copy(targetPath, backupPath);
 				return true;
+			} catch ( UnauthorizedAccessException ) {
+				startInAdmin(Application.ExecutablePath);
+				return false;
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
@@ -55,13 +79,14 @@ namespace han_l4dbfix.Classes {
 			// Cek Apakah textPatch ada di dalam baris Video.txt
 			string[] txtLines = readFile(targetPath);
 			short arrlen = (short)txtLines.Length;
-			if ( arrlen == 1 ) return; // cek apakah isi file video.txt tidak kosong
+			if ( arrlen == 1 )
+				return; // cek apakah isi file video.txt tidak kosong
 			
 			log.Clear();
 			log.AppendText("[CHECKING FILE]");
 			
-			foreach(string line in txtLines) {
-				if(line.Contains(textPatch)) { // Jika ada keluar dari sub
+			foreach ( string line in txtLines ) {
+				if ( line.Contains(textPatch) ) { // Jika ada keluar dari sub
 					log.AppendText(" Patch is not needed yet." + Environment.NewLine);
 					return;
 				}
@@ -75,10 +100,13 @@ namespace han_l4dbfix.Classes {
 			
 			log.AppendText("[PATCHING]");
 			try {
-				txtLines.SetValue(textPatch + " }", arrlen -1);
+				txtLines.SetValue(textPatch + " }", arrlen - 1);
 				File.WriteAllLines(targetPath, txtLines);
 				log.AppendText(" Succeed!" + Environment.NewLine);
-			} catch (Exception e) {
+			} catch ( UnauthorizedAccessException ) {
+				startInAdmin(Application.ExecutablePath);
+				log.AppendText(" Failed!" + Environment.NewLine + Environment.NewLine + "ACCESS DENIED - Try to run this tool as Administrator");
+			} catch ( Exception e ) {
 				log.AppendText(" Failed!" + Environment.NewLine);
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -93,6 +121,8 @@ namespace han_l4dbfix.Classes {
 				} else {
 					MessageBox.Show("Backup file doesn't exist!", "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
+			} catch ( UnauthorizedAccessException ) {
+				startInAdmin(Application.ExecutablePath);
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}

@@ -62,7 +62,7 @@ namespace han_l4dbfix {
 		}
 		
 		void BtnPatchClick (object sender, EventArgs e) {
-
+			Func.patchTarget(txtLog);
 		}
 		
 		void LblVisitChnlClick (object sender, EventArgs e) {
@@ -72,6 +72,10 @@ namespace han_l4dbfix {
 		
 		void BtnSubscribeClick (object sender, EventArgs e) {
 			Func.goToUrl("https://www.youtube.com/@Hanafie11?sub_confirmation=1");
+			Func.Dispose();
+		}
+		void LblRestoreClick (object sender, EventArgs e) {
+			Func.restoreBackup();
 			Func.Dispose();
 		}
 

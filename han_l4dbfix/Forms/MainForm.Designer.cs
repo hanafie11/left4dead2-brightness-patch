@@ -130,8 +130,8 @@ namespace han_l4dbfix
 			this.txtLog.ReadOnly = true;
 			this.txtLog.Size = new System.Drawing.Size(468, 117);
 			this.txtLog.TabIndex = 4;
-			this.txtLog.Text = "[>] Hello There!\r\n[>] ONLY DOWNLOAD THIS PROGRAM FROM THE ORIGINAL SOURCE\r\n[>] Cl" +
-	"ick \'Patch Now\' Button To Begin";
+			this.txtLog.Text = "[>] Hello There!\r\n[>] ONLY DOWNLOAD THIS PROGRAM FROM THE OFFICIAL SOURCE\r\n[>] Cl" +
+	"ose your Left 4 Dead 2 if it\'s open\r\n[>] Click \'Patch Now\' Button To Begin";
 			// 
 			// groupBox1
 			// 
@@ -170,6 +170,7 @@ namespace han_l4dbfix
 			this.lblRestore.Size = new System.Drawing.Size(168, 14);
 			this.lblRestore.TabIndex = 7;
 			this.lblRestore.Text = "Restore Previous Backup";
+			this.lblRestore.Click += new System.EventHandler(this.LblRestoreClick);
 			// 
 			// btnSubscribe
 			// 

@@ -100,7 +100,9 @@ namespace han_l4dbfix.Classes {
 			
 			log.AppendText("[PATCHING]");
 			try {
-				txtLines.SetValue(textPatch + " }", arrlen - 1);
+				txtLines[arrlen - 1] = txtLines[arrlen - 1].Replace('}', ' ');
+				txtLines[arrlen - 1] += textPatch + "}";
+				//txtLines.SetValue(textPatch + " }", arrlen - 1);
 				File.WriteAllLines(targetPath, txtLines);
 				log.AppendText(" Succeed!" + Environment.NewLine);
 			} catch ( UnauthorizedAccessException ) {

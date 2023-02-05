@@ -57,7 +57,7 @@ namespace han_l4dbfix.Classes {
 				return File.ReadAllLines(filePath);			 
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return new string[1]; // kembalikan array kosong
+				return new string[0]; // kembalikan array kosong
 			}
 		}
 		
@@ -79,8 +79,8 @@ namespace han_l4dbfix.Classes {
 			// Cek Apakah textPatch ada di dalam baris Video.txt
 			string[] txtLines = readFile(targetPath);
 			short arrlen = (short)txtLines.Length;
-			if ( arrlen == 1 || arrlen > 24 ) {
-				log.AppendText("[ERROR] The file content is empty or too long." + Environment.NewLine);
+			if ( arrlen == 0 || arrlen > 24 ) {
+				log.Text = "[ERROR] The file content is empty or too long." + Environment.NewLine;
 				return; // cek apakah isi file video.txt tidak kosong	
 			}				
 			

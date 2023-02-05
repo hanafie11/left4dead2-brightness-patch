@@ -21,8 +21,11 @@ namespace han_l4dbfix.Classes {
 		public void Dispose ( ) {/*Release Some Memories*/
 		}
 		public void goToUrl (string url) {
-			try {	
-				Process.Start(url);
+			try {
+				var process = new Process(); //
+				process.StartInfo.FileName = url;				
+				process.Start();
+				process.Dispose();
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
@@ -54,7 +57,7 @@ namespace han_l4dbfix.Classes {
 				return File.ReadAllLines(filePath);			 
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return new string[1]; // kembalikan array kosong
+				return new string[0]; // kembalikan array kosong
 			}
 		}
 		
@@ -66,9 +69,6 @@ namespace han_l4dbfix.Classes {
 				
 				File.Copy(targetPath, backupPath);
 				return true;
-			} catch ( UnauthorizedAccessException ) {
-				startInAdmin(Application.ExecutablePath);
-				return false;
 			} catch ( Exception e ) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
@@ -79,8 +79,10 @@ namespace han_l4dbfix.Classes {
 			// Cek Apakah textPatch ada di dalam baris Video.txt
 			string[] txtLines = readFile(targetPath);
 			short arrlen = (short)txtLines.Length;
-			if ( arrlen == 1 )
-				return; // cek apakah isi file video.txt tidak kosong
+			if ( arrlen == 0 || arrlen > 24 ) {
+				log.Text = "[ERROR] The file content is empty or too long." + Environment.NewLine;
+				return; // cek apakah isi file video.txt tidak kosong	
+			}				
 			
 			log.Clear();
 			log.AppendText("[CHECKING FILE]");
@@ -101,16 +103,18 @@ namespace han_l4dbfix.Classes {
 			log.AppendText("[PATCHING]");
 			try {
 				txtLines[arrlen - 1] = txtLines[arrlen - 1].Replace('}', ' ');
-				txtLines[arrlen - 1] += textPatch + "}";
+				txtLines[arrlen - 1] += Environment.NewLine + "\t" + textPatch + Environment.NewLine + "}";
 				//txtLines.SetValue(textPatch + " }", arrlen - 1);
 				File.WriteAllLines(targetPath, txtLines);
 				log.AppendText(" Succeed!" + Environment.NewLine);
 			} catch ( UnauthorizedAccessException ) {
 				startInAdmin(Application.ExecutablePath);
 				log.AppendText(" Failed!" + Environment.NewLine + Environment.NewLine + "ACCESS DENIED - Try to run this tool as Administrator");
+				return;
 			} catch ( Exception e ) {
 				log.AppendText(" Failed!" + Environment.NewLine);
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
 		}
 		

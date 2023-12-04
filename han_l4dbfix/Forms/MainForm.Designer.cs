@@ -26,6 +26,7 @@ namespace han_l4dbfix
 		private System.Windows.Forms.Label lblVisitChnl;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Button btnOpenVideotxt;
+		private System.Windows.Forms.Label lblTutorial;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -62,6 +63,7 @@ namespace han_l4dbfix
 			this.btnSubscribe = new System.Windows.Forms.Button();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.lblTutorial = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
@@ -117,9 +119,9 @@ namespace han_l4dbfix
 			this.label2.ForeColor = System.Drawing.Color.LawnGreen;
 			this.label2.Location = new System.Drawing.Point(80, 44);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(178, 11);
+			this.label2.Size = new System.Drawing.Size(181, 11);
 			this.label2.TabIndex = 3;
-			this.label2.Text = "Version 1.1 | By. Hanafie11";
+			this.label2.Text = "Version 1.5 | By. Hanafie11";
 			// 
 			// txtLog
 			// 
@@ -145,7 +147,7 @@ namespace han_l4dbfix
 			this.groupBox1.Controls.Add(this.btnPatch);
 			this.groupBox1.Location = new System.Drawing.Point(12, 200);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(462, 59);
+			this.groupBox1.Size = new System.Drawing.Size(462, 60);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			// 
@@ -218,13 +220,27 @@ namespace han_l4dbfix
 			this.pictureBox1.TabIndex = 7;
 			this.pictureBox1.TabStop = false;
 			// 
+			// lblTutorial
+			// 
+			this.lblTutorial.AutoSize = true;
+			this.lblTutorial.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.lblTutorial.Font = new System.Drawing.Font("Consolas", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblTutorial.ForeColor = System.Drawing.Color.SeaShell;
+			this.lblTutorial.Location = new System.Drawing.Point(203, 269);
+			this.lblTutorial.Name = "lblTutorial";
+			this.lblTutorial.Size = new System.Drawing.Size(273, 14);
+			this.lblTutorial.TabIndex = 9;
+			this.lblTutorial.Text = "Confused? Click Here To Watch Tutorial";
+			this.lblTutorial.Click += new System.EventHandler(this.LblTutorialClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.BackColor = System.Drawing.Color.Black;
-			this.ClientSize = new System.Drawing.Size(487, 275);
+			this.ClientSize = new System.Drawing.Size(487, 295);
+			this.Controls.Add(this.lblTutorial);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.btnSubscribe);

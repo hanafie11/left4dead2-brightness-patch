@@ -101,5 +101,10 @@ namespace han_l4dbfix
 		{
 			btnOpenVideotxt.BackColor = Color.Transparent;
 		}
+		void LblTutorialClick(object sender, EventArgs e)
+		{
+			Func.goToUrl("https://youtu.be/BAEfTVF02I8?si=xc0e-jyhhP67JilS");
+			Func.Dispose();
+		}
 	}
 }

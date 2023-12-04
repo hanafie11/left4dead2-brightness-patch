@@ -24,7 +24,8 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion ("1.1.0.0")]
+[assembly: AssemblyVersion ("1.0.0.0")]
 [assembly: AssemblyFileVersion ("1.1.0.0")]
-[assembly: AssemblyInformationalVersion ("")]
-[assembly: Guid ("970a2c37-f7ac-4f8b-a4f5-9ae7e6cbe116")]
+[assembly: AssemblyInformationalVersion ("1.1")]
+[assembly: Guid ("86edf95a-4b35-4b21-8d4f-a86ff7d336b3")]
+[assembly: AssemblyDefaultAlias ("han_l4dbfix")]

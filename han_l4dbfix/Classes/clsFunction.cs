@@ -10,6 +10,7 @@ using System;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace han_l4dbfix.Classes
 {
@@ -94,8 +95,12 @@ namespace han_l4dbfix.Classes
 			log.Clear();
 			log.AppendText("[CHECKING FILE]");
 			
+			const string reduceMultiSpace= @"[ ]{2,}";
+			var textPatchReduced = Regex.Replace(textPatch.Replace("\t"," "), reduceMultiSpace, " "); // Remove multiple spaces
+			string lineText;
 			foreach (string line in txtLines) {
-				if (line.Contains(textPatch)) { 
+				lineText = Regex.Replace(line.Replace("\t"," "), reduceMultiSpace, " ");
+				if (lineText.Contains(textPatchReduced)) { 
 					log.AppendText(" Patch is not needed yet." + Environment.NewLine);
 					return;
 				}
@@ -108,7 +113,7 @@ namespace han_l4dbfix.Classes
 			log.AppendText(Environment.NewLine);
 			
 			log.AppendText("[PATCHING]");
-			try {
+			try {		
 				txtLines[arrlen - 1] = txtLines[arrlen - 1].Replace('}', ' '); // remove last line
 				txtLines[arrlen - 1] += Environment.NewLine + "\t" + textPatch + Environment.NewLine + "}"; // Add patch code
 				//txtLines.SetValue(textPatch + " }", arrlen - 1);
@@ -142,7 +147,8 @@ namespace han_l4dbfix.Classes
 			}
 		}
 		
-		public void openVideotxt() {
+		public void openVideotxt()
+		{
 			goToUrl(targetPath);
 		}
 	}

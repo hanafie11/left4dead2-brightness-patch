@@ -69,6 +69,7 @@ namespace han_l4dbfix
 		void BtnPatchClick(object sender, EventArgs e)
 		{
 			Func.patchTarget(txtLog);
+			Func.Dispose();
 		}
 		
 		void LblVisitChnlClick(object sender, EventArgs e)

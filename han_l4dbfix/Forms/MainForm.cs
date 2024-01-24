@@ -21,7 +21,7 @@ namespace han_l4dbfix
 		{
 			InitializeComponent();
 			Func = new clsFunction(); // Instansiasi Objek Func
-			
+			Func.isConfigFileLocked(lblLock);
 			txtLog.Select(0, 0);
 		}
 		
@@ -68,7 +68,7 @@ namespace han_l4dbfix
 		
 		void BtnPatchClick(object sender, EventArgs e)
 		{
-			Func.patchTarget(txtLog);
+			Func.patchTarget(txtLog, lblLock);
 			Func.Dispose();
 		}
 		
@@ -85,7 +85,7 @@ namespace han_l4dbfix
 		}
 		void LblRestoreClick(object sender, EventArgs e)
 		{
-			Func.restoreBackup();
+			Func.restoreBackup(lblLock);
 			Func.Dispose();
 		}
 
@@ -103,7 +103,12 @@ namespace han_l4dbfix
 		}
 		void LblTutorialClick(object sender, EventArgs e)
 		{
-			Func.goToUrl("https://youtu.be/BAEfTVF02I8?si=xc0e-jyhhP67JilS");
+			Func.goToUrl("https://youtube.com/playlist?list=PLQOmW4DIZh-BK7OlmW1SBZeXX5mbZ3Hq2&si=iXch3O602XllBr6u");
+			Func.Dispose();
+		}
+		void LblLockClick(object sender, EventArgs e)
+		{
+			Func.lockOrUnlock(lblLock, true);
 			Func.Dispose();
 		}
 	}

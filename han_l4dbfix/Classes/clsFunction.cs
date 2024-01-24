@@ -28,14 +28,14 @@ namespace han_l4dbfix.Classes
 		{
 			try {
 				var process = new Process(); //
-				process.StartInfo.FileName = url;				
+				process.StartInfo.FileName = url;
 				process.Start();
 				process.Dispose();
 			} catch (Exception e) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
-			
+		
 		private void startInAdmin(string filepath)
 		{
 			DialogResult confirmRestart = MessageBox.Show("Administrator Privileges Required, do you want to start this tool in Admin Mode?",
@@ -60,10 +60,10 @@ namespace han_l4dbfix.Classes
 		private string[] readFile(string filePath)
 		{
 			try {
-				return File.ReadAllLines(filePath);			 
+				return File.ReadAllLines(filePath);
 			} catch (Exception e) {
 				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return new string[0]; 
+				return new string[0];
 			}
 		}
 		
@@ -82,28 +82,60 @@ namespace han_l4dbfix.Classes
 			}
 		}
 		
-		public void patchTarget(TextBox log)
+		public bool isConfigFileLocked(Label lblLockStat)
+		{
+			try {
+				FileInfo finfo = new FileInfo(targetPath);
+				if (!finfo.Exists) return false;
+				
+				if (finfo.IsReadOnly == true) {
+					lblLockStat.Text = "> Unlock Video.txt File";
+					return true;
+				} else if (finfo.IsReadOnly == false) {
+					lblLockStat.Text = "> Lock Video.txt File";
+					return false;
+				} else {
+					return false;
+				}
+				
+			} catch (Exception e) {
+				MessageBox.Show(e.Message, "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return false;
+			}
+		}
+		
+		public void patchTarget(TextBox log, Label lblLockStat)
 		{
 			string[] txtLines = readFile(targetPath); // Array For video.txt contents
 			short arrlen = (short)txtLines.Length;
 			
 			if (arrlen == 0 || arrlen > 24) {
-				log.Text = "[ERROR] The file content is empty, missing or too long." + Environment.NewLine;
-				return; 
-			}				
+				log.Text = "[ERROR] The file is empty, missing or it's content is too long." + Environment.NewLine;
+				return;
+			}
 			
 			log.Clear();
 			log.AppendText("[CHECKING FILE]");
 			
-			const string reduceMultiSpace= @"[ ]{2,}";
-			var textPatchReduced = Regex.Replace(textPatch.Replace("\t"," "), reduceMultiSpace, " "); // Remove multiple spaces
+			if (!txtLines[arrlen-1].Contains("}")) {
+				log.AppendText(" File content structure is wrong " + Environment.NewLine);
+				return;
+			}
+			
+			const string reduceMultiSpace = @"[ ]{2,}";
+			var textPatchReduced = Regex.Replace(textPatch.Replace("\t", " "), reduceMultiSpace, " "); // Remove multiple spaces
 			string lineText;
 			foreach (string line in txtLines) {
-				lineText = Regex.Replace(line.Replace("\t"," "), reduceMultiSpace, " ");
-				if (lineText.Contains(textPatchReduced)) { 
+				lineText = Regex.Replace(line.Replace("\t", " "), reduceMultiSpace, " ");
+				if (lineText.Contains(textPatchReduced)) {
 					log.AppendText(" Patch is not needed yet." + Environment.NewLine);
 					return;
 				}
+			}
+			
+			if (isConfigFileLocked(lblLockStat) == true) {
+				log.AppendText(" FILE PROTECTED!, UNLOCKING . . ., ");
+				lockOrUnlock(lblLockStat, false);
 			}
 			
 			log.AppendText(" OK" + Environment.NewLine);
@@ -113,12 +145,25 @@ namespace han_l4dbfix.Classes
 			log.AppendText(Environment.NewLine);
 			
 			log.AppendText("[PATCHING]");
-			try {		
+			try {
 				txtLines[arrlen - 1] = txtLines[arrlen - 1].Replace('}', ' '); // remove last line
-				txtLines[arrlen - 1] += Environment.NewLine + "\t" + textPatch + Environment.NewLine + "}"; // Add patch code
+				txtLines[arrlen - 1] += "\t" + textPatch + Environment.NewLine + "}"; // Add patch code
 				//txtLines.SetValue(textPatch + " }", arrlen - 1);
 				File.WriteAllLines(targetPath, txtLines); // write into video.txt
 				log.AppendText(" Succeed!" + Environment.NewLine);
+				
+				DialogResult lockConfirm = MessageBox.Show("Do You Want To Lock Video.txt From Any Changes?", "Set File To Readonly Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				
+				if (lockConfirm == DialogResult.Yes) {
+					FileInfo fInfo = new FileInfo(targetPath);
+					if (!fInfo.IsReadOnly) {
+						fInfo.IsReadOnly = true;
+						log.AppendText("[INFO] File Video.txt has been Locked!" + Environment.NewLine);
+					}
+				}
+				
+				isConfigFileLocked(lblLockStat);
+				
 			} catch (UnauthorizedAccessException) {
 				startInAdmin(Application.ExecutablePath);
 				log.AppendText(" Failed!" + Environment.NewLine + Environment.NewLine + "ACCESS DENIED - Try to run this tool as Administrator");
@@ -130,15 +175,19 @@ namespace han_l4dbfix.Classes
 			}
 		}
 		
-		public void restoreBackup()
+		public void restoreBackup(Label lblLockStat)
 		{
 			try {
-				if (File.Exists(backupPath)) { 
-					File.Delete(targetPath); 
-					File.Copy(backupPath, targetPath); 
+				if (File.Exists(backupPath)) {
+					
+					if(isConfigFileLocked(lblLockStat) == true) lockOrUnlock(lblLockStat, false);
+					
+					File.Delete(targetPath);
+					File.Copy(backupPath, targetPath);
 					MessageBox.Show("File video.txt has been successfully recovered!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				} else {
 					MessageBox.Show("Backup file doesn't exist!", "Oops Something Went Wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					isConfigFileLocked(lblLockStat);
 				}
 			} catch (UnauthorizedAccessException) {
 				startInAdmin(Application.ExecutablePath);
@@ -150,6 +199,26 @@ namespace han_l4dbfix.Classes
 		public void openVideotxt()
 		{
 			goToUrl(targetPath);
+		}
+		
+		public void lockOrUnlock(Label lblLockStat, bool showMessage)
+		{
+			try {
+				FileInfo fInfo = new FileInfo(targetPath);
+				if (isConfigFileLocked(lblLockStat) == true) {
+					fInfo.IsReadOnly = false;
+					if(showMessage == true)
+						MessageBox.Show("File video.txt has been Unlocked!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				} else {
+					fInfo.IsReadOnly = true;
+					if(showMessage == true)
+						MessageBox.Show("File video.txt has been Locked!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				
+				isConfigFileLocked(lblLockStat);
+			} catch (Exception e) {
+				MessageBox.Show(e.Message, "Oops Something Went Wrong" + isConfigFileLocked(lblLockStat), MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }
